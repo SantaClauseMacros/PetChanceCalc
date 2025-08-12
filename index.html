@@ -7,65 +7,119 @@
 <style>
   :root {
     --bg: #0f1720;
-    --card: #0b1220;
+    --card: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     --accent1: #ff9f1c;
     --accent2: #2dd4bf;
     --text: #e6eef8;
     --muted: #98a0b3;
+    --glass: rgba(255,255,255,0.03);
   }
+
+  /* Base */
+  * { box-sizing: border-box; }
   body {
     margin: 0;
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .wrap {
-    max-width: 900px;
+    max-width: 980px;
     margin: 28px auto;
-    padding: 26px;
+    padding: 28px;
   }
   h1 {
-    font-size: 28px;
-    margin: 0 0 12px;
+    font-size: 30px;
+    margin: 0 0 10px;
     text-align: center;
     color: var(--accent1);
+    letter-spacing: .4px;
   }
   .subtitle {
     color: var(--muted);
     text-align: center;
     margin-bottom: 18px;
+    font-size: 15px;
   }
+
+  /* Controls */
+  .button-row {
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+  .button-row .btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight:700;
+    transition: all .18s ease;
+  }
+  .button-row .btn.primary {
+    background: linear-gradient(90deg, var(--accent1), #ffb845);
+    border: none;
+    color: black;
+  }
+  .button-row .btn.ghost {
+    background: transparent;
+    border: 1px dashed rgba(255,255,255,0.04);
+    color: var(--muted);
+    font-weight:600;
+  }
+
+  /* Grid & cards */
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 18px;
   }
   .card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    background: var(--card);
     border: 1px solid rgba(255,255,255,0.03);
     padding: 18px;
     border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    cursor: pointer;
+    min-height: 220px;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(2,6,23,0.7);
+    border-color: rgba(45,212,191,0.12);
+  }
+  .card.selected {
+    border-color: rgba(255,159,28,0.28);
+    box-shadow: 0 22px 48px rgba(255,159,28,0.06);
   }
   .role-head {
     font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   .role-head .emoji {
-    font-size: 24px;
+    font-size: 26px;
+    width: 36px;
+    text-align:center;
   }
   .role-head .title {
-    font-size: 18px;
+    font-size: 17px;
   }
   .tasks {
     margin: 8px 0 0;
-    padding-left: 18px;
+    padding-left: 8px;
     line-height: 1.6;
     color: var(--text);
+    font-size: 14px;
   }
   .task {
     margin: 6px 0;
@@ -74,7 +128,7 @@
     align-items: flex-start;
   }
   .bullet {
-    width: 28px;
+    width: 30px;
     flex-shrink: 0;
     text-align: center;
     font-size: 18px;
@@ -84,48 +138,51 @@
     font-size: 13px;
     margin-top: 12px;
   }
+
   .footer {
-    margin-top: 18px;
+    margin-top: 20px;
     text-align: center;
     color: var(--muted);
     font-size: 13px;
   }
-  .button-group {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin: 32px 0 28px;
-  }
-  button {
-    background: var(--accent1);
-    border: none;
-    padding: 14px 26px;
-    border-radius: 14px;
-    color: var(--text);
-    font-size: 18px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: background 0.3s ease;
-  }
-  button:hover {
-    background: #ffb845;
-  }
-  .hidden {
-    display: none;
-  }
-  /* single column on small screens */
+
+  /* Make buttons stack on small screens */
   @media (max-width: 720px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-    .button-group {
-      flex-direction: column;
-      gap: 16px;
-    }
-    button {
-      width: 100%;
-    }
+    .grid { grid-template-columns: 1fr; }
+    .button-row { gap:12px; }
   }
+
+  /* PRINT STYLES */
+  @page { size: A4 portrait; margin: 12mm; }
+  @media print {
+    :root { color-scheme: light; }
+    body { background: white; color: black; }
+    .wrap { max-width: 100%; margin: 0; padding: 0; }
+    /* hide controls for printing */
+    .button-row, .footer, h1, #subtitle { display:none !important; }
+    /* Make cards full page — each card prints on its own page */
+    .grid { display:block; }
+    .card {
+      /* Use full printable area */
+      width: 100%;
+      min-height: auto;
+      height: calc(297mm - 24mm); /* A4 height minus margins */
+      box-shadow: none;
+      border-radius: 6px;
+      background: white;
+      color: black;
+      border: 1px solid #222;
+      padding: 20mm;
+      page-break-after: always;
+    }
+    .role-head .title { font-size: 28px; color: #000; }
+    .tasks { font-size: 20px; color: #111; padding-left: 12px; }
+    .task { margin: 10px 0; }
+    .bullet { font-size: 22px; width: 38px; }
+  }
+
+  /* small helper for print preview box */
+  .controls-right { display:flex; gap:12px; justify-content:center; margin-bottom:14px; }
 </style>
 </head>
 <body>
@@ -134,30 +191,35 @@
     <h1>99 Nights in the Forest — Role Selector</h1>
     <div class="subtitle" id="subtitle">How many players are you playing with?</div>
 
-    <!-- Player Count Selection -->
-    <div id="playerSelect" class="button-group">
-      <button data-players="2">2 Players</button>
-      <button data-players="3">3 Players</button>
+    <!-- Controls -->
+    <div class="button-row" id="playerSelect">
+      <button class="btn primary" data-players="2">2 Players</button>
+      <button class="btn primary" data-players="3">3 Players</button>
+      <div class="controls-right">
+        <button id="resetBtn" class="btn ghost" title="Clear saved selection">Reset</button>
+        <button id="printBtn" class="btn" title="Print visible cards">Print Cards</button>
+      </div>
     </div>
 
     <!-- Role Selection for 2 Players -->
-    <div id="roles2" class="hidden">
+    <div id="roles2" class="hidden" aria-hidden="true">
       <h2 style="color: var(--accent2); margin-bottom: 8px;">Select Your Role</h2>
       <div class="grid">
         <div class="card role-choice" data-role="Base Builder / Keeper + Lumberjack / Fire Keeper">
           <div class="role-head"><div class="emoji">🏠🩹</div><div class="title">Base Builder / Keeper + Lumberjack / Fire Keeper</div></div>
           <div class="tasks">
             <div class="task"><div class="bullet">📦</div><div>makes sure base is organized</div></div>
-            <div class="task"><div class="bullet">🛏</div><div>makes sure you have all beds</div></div>
-            <div class="task"><div class="bullet">🧰</div><div>makes sure you have all the things you need within a base</div></div>
+            <div class="task"><div class="bullet">🛏</div><div>makes sure you have all the beds</div></div>
+            <div class="task"><div class="bullet">🧰</div><div>makes sure you have all the things you need within the base</div></div>
             <div class="task"><div class="bullet">🩹</div><div>makes sure base has bandages & saves people who die</div></div>
             <div class="task"><div class="bullet">🌳</div><div>cuts down MANY trees</div></div>
             <div class="task"><div class="bullet">🌱</div><div>saves the saplings</div></div>
             <div class="task"><div class="bullet">🌲</div><div>in charge of making a tree farm and cutting it down regularly</div></div>
             <div class="task"><div class="bullet">🔥</div><div>makes sure the fire doesn't run out</div></div>
-            <div class="task"><div class="bullet">🪣</div><div>gets oil & coal etc. to fuel fire</div></div>
+            <div class="task"><div class="bullet">🪣</div><div>gets oil, coal, etc. to fuel the fire</div></div>
           </div>
         </div>
+
         <div class="card role-choice" data-role="Food Supplier / Cook + Scrap & Loot Finder / Explorer">
           <div class="role-head"><div class="emoji">🍲🗺</div><div class="title">Food Supplier / Cook + Scrap & Loot Finder / Explorer</div></div>
           <div class="tasks">
@@ -165,30 +227,33 @@
             <div class="task"><div class="bullet">🥘</div><div>in charge of crockpot & farm plots</div></div>
             <div class="task"><div class="bullet">🍛</div><div>makes stews & keeps food at base</div></div>
             <div class="task"><div class="bullet">🐇</div><div>kills rabbits & wolves for food</div></div>
-            <div class="task"><div class="bullet">🐻</div><div>makes sure people get pelts etc. for ammo & weapons</div></div>
-            <div class="task"><div class="bullet">🛠</div><div>finds scrap for the bench so the base keeper can maintain base and get things that everyone needs</div></div>
-            <div class="task"><div class="bullet">⚒</div><div>makes sure everyone has the appropriate weapons & tools for their role (e.g. wood person has great axe / chainsaw etc.)</div></div>
+            <div class="task"><div class="bullet">🐻</div><div>makes sure people get pelts, etc. for ammo & weapons</div></div>
+            <div class="task"><div class="bullet">🛠</div><div>finds scrap for the bench so the base keeper can maintain the base</div></div>
+            <div class="task"><div class="bullet">⚒</div><div>makes sure everyone has the appropriate weapons & tools for their role (e.g. wood person has great axe / chainsaw)</div></div>
             <div class="task"><div class="bullet">👶</div><div>finds all of the kids to make days go faster</div></div>
-            <div class="task"><div class="bullet">📦</div><div>also finds loot etc. & scraps & pelts while exploring; explores stronghold etc.</div></div>
+            <div class="task"><div class="bullet">📦</div><div>also finds loot, scraps & pelts while exploring; explores stronghold, etc.</div></div>
             <div class="task"><div class="bullet">🗡</div><div>fights cultists at base</div></div>
+            <!-- New instruction requested by user -->
+            <div class="task"><div class="bullet">🪤</div><div>place rabbit traps in front of rabbit holes</div></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Role Selection for 3 Players -->
-    <div id="roles3" class="hidden">
+    <div id="roles3" class="hidden" aria-hidden="true">
       <h2 style="color: var(--accent2); margin-bottom: 8px;">Select Your Role</h2>
       <div class="grid">
         <div class="card role-choice" data-role="Base Builder / Keeper">
           <div class="role-head"><div class="emoji">🏠🩹</div><div class="title">Base Builder / Keeper</div></div>
           <div class="tasks">
             <div class="task"><div class="bullet">📦</div><div>makes sure base is organized</div></div>
-            <div class="task"><div class="bullet">🛏</div><div>makes sure you have all beds</div></div>
-            <div class="task"><div class="bullet">🧰</div><div>makes sure you have all the things you need within a base</div></div>
+            <div class="task"><div class="bullet">🛏</div><div>makes sure you have all the beds</div></div>
+            <div class="task"><div class="bullet">🧰</div><div>makes sure you have all the things you need within the base</div></div>
             <div class="task"><div class="bullet">🩹</div><div>makes sure base has bandages & saves people who die</div></div>
           </div>
         </div>
+
         <div class="card role-choice" data-role="Food Supplier / Cook + Lumberjack / Fire Keeper">
           <div class="role-head"><div class="emoji">🍲🔥</div><div class="title">Food Supplier / Cook + Lumberjack / Fire Keeper</div></div>
           <div class="tasks">
@@ -200,22 +265,25 @@
             <div class="task"><div class="bullet">🌱</div><div>saves the saplings</div></div>
             <div class="task"><div class="bullet">🌲</div><div>in charge of making a tree farm and cutting it down regularly</div></div>
             <div class="task"><div class="bullet">🔥</div><div>makes sure the fire doesn't run out</div></div>
-            <div class="task"><div class="bullet">🪣</div><div>gets oil & coal etc. to fuel fire</div></div>
+            <div class="task"><div class="bullet">🪣</div><div>gets oil, coal, etc. to fuel the fire</div></div>
+            <div class="task"><div class="bullet">🪤</div><div>place rabbit traps in front of rabbit holes</div></div>
           </div>
         </div>
+
         <div class="card role-choice" data-role="Scrap & Loot Finder">
           <div class="role-head"><div class="emoji">🛠🗡</div><div class="title">Scrap & Loot Finder</div></div>
           <div class="tasks">
-            <div class="task"><div class="bullet">🐻</div><div>makes sure people get pelts etc. for ammo & weapons</div></div>
-            <div class="task"><div class="bullet">🛠</div><div>finds scrap for the bench so the base keeper can maintain base and get things that everyone needs</div></div>
-            <div class="task"><div class="bullet">⚒</div><div>makes sure everyone has the appropriate weapons & tools for their role (e.g. wood person has great axe / chainsaw etc.)</div></div>
+            <div class="task"><div class="bullet">🐻</div><div>makes sure people get pelts, etc. for ammo & weapons</div></div>
+            <div class="task"><div class="bullet">🛠</div><div>finds scrap for the bench so the base keeper can maintain the base</div></div>
+            <div class="task"><div class="bullet">⚒</div><div>makes sure everyone has the appropriate weapons & tools for their role (e.g. wood person has great axe / chainsaw)</div></div>
           </div>
         </div>
+
         <div class="card role-choice" data-role="Explorer">
           <div class="role-head"><div class="emoji">🗺🗡</div><div class="title">Explorer</div></div>
           <div class="tasks">
             <div class="task"><div class="bullet">👶</div><div>finds all of the kids to make days go faster</div></div>
-            <div class="task"><div class="bullet">📦</div><div>also finds loot etc. & scraps & pelts while exploring; explores stronghold etc.</div></div>
+            <div class="task"><div class="bullet">📦</div><div>also finds loot, scraps & pelts while exploring; explores stronghold, etc.</div></div>
             <div class="task"><div class="bullet">🗡</div><div>fights cultists at base</div></div>
           </div>
         </div>
@@ -230,6 +298,8 @@
   const roles2 = document.getElementById('roles2');
   const roles3 = document.getElementById('roles3');
   const subtitle = document.getElementById('subtitle');
+  const printBtn = document.getElementById('printBtn');
+  const resetBtn = document.getElementById('resetBtn');
 
   // Load saved selection
   const savedPlayers = localStorage.getItem('players');
@@ -259,16 +329,23 @@
   if (savedPlayers) {
     showRoles(savedPlayers);
     if (savedRole) {
-      alert(`You previously selected role: ${savedRole}`);
+      // mark selected card visually
+      const sel = document.querySelectorAll('.role-choice');
+      sel.forEach(c => {
+        if (c.getAttribute('data-role') === savedRole) c.classList.add('selected');
+      });
+      alert(`You previously selected role:\n\n${savedRole}`);
     }
   }
 
   // Player count buttons
-  playerSelect.querySelectorAll('button').forEach(button => {
+  playerSelect.querySelectorAll('button[data-players]').forEach(button => {
     button.addEventListener('click', () => {
       const count = button.getAttribute('data-players');
       localStorage.setItem('players', count);
       localStorage.removeItem('role'); // Clear old role when new player count chosen
+      // clear selected styling
+      document.querySelectorAll('.role-choice').forEach(c => c.classList.remove('selected'));
       showRoles(count);
     });
   });
@@ -278,7 +355,37 @@
     card.addEventListener('click', () => {
       const role = card.getAttribute('data-role');
       localStorage.setItem('role', role);
+      // visual feedback
+      document.querySelectorAll('.role-choice').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
       alert(`You selected role:\n\n${role}\n\nReload to change.`);
+    });
+  });
+
+  // Print visible cards (prints whichever role panel is visible)
+  printBtn.addEventListener('click', () => {
+    // Expand all visible cards to full page in print. We just call print(); page CSS handles layout.
+    window.print();
+  });
+
+  // Reset saved choices
+  resetBtn.addEventListener('click', () => {
+    if (confirm('Clear saved player count and role selection?')) {
+      localStorage.removeItem('players');
+      localStorage.removeItem('role');
+      document.querySelectorAll('.role-choice').forEach(c => c.classList.remove('selected'));
+      showPlayerSelect();
+    }
+  });
+
+  // Accessibility: allow pressing Enter/Space to select cards
+  document.querySelectorAll('.role-choice').forEach(card => {
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
     });
   });
 </script>
