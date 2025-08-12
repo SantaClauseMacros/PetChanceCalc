@@ -1,324 +1,287 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Pets Odds Calculator</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .pet-selector {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .pet-button {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid transparent;
-        }
-        
-        .pet-button:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .pet-button.active {
-            background: linear-gradient(45deg, #4CAF50, #81C784);
-            border-color: #4CAF50;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-        }
-        
-        .base-info {
-            text-align: center;
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        .multiplier-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .multiplier-item {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .multiplier-item:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-        }
-        
-        .multiplier-item.active {
-            border-color: #4CAF50;
-            background: rgba(76, 175, 80, 0.3);
-        }
-        
-        .multiplier-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .multiplier-value {
-            font-size: 1.1em;
-            color: #FFD700;
-        }
-        
-        .results {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-        }
-        
-        .current-odds {
-            text-align: center;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-        
-        .reset-btn {
-            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            margin: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .reset-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-        
-        .all-btn {
-            background: linear-gradient(45deg, #4CAF50, #81C784);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            margin: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .all-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>99 Nights in the Forest - Role Selector</title>
+<style>
+  :root {
+    --bg: #0f1720;
+    --card: #0b1220;
+    --accent1: #ff9f1c;
+    --accent2: #2dd4bf;
+    --text: #e6eef8;
+    --muted: #98a0b3;
+  }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 900px;
+    margin: 28px auto;
+    padding: 26px;
+  }
+  h1 {
+    font-size: 28px;
+    margin: 0 0 12px;
+    text-align: center;
+    color: var(--accent1);
+  }
+  .subtitle {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.03);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  }
+  .role-head {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .role-head .emoji {
+    font-size: 24px;
+  }
+  .role-head .title {
+    font-size: 18px;
+  }
+  .tasks {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .task {
+    margin: 6px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .bullet {
+    width: 28px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 18px;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 12px;
+  }
+  .footer {
+    margin-top: 18px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 32px 0 28px;
+  }
+  button {
+    background: var(--accent1);
+    border: none;
+    padding: 14px 26px;
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #ffb845;
+  }
+  .hidden {
+    display: none;
+  }
+  /* single column on small screens */
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .button-group {
+      flex-direction: column;
+      gap: 16px;
+    }
+    button {
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>🏋️ Gym Pets Odds Calculator</h1>
-        
-        <div class="pet-selector">
-            <button class="pet-button" onclick="selectPet('panda')">🐼 Huge Gym Panda</button>
-            <button class="pet-button active" onclick="selectPet('dragon')">🐉 Gym Dragon</button>
-            <button class="pet-button" onclick="selectPet('corgi')">🐕 Gym Corgi</button>
-            <button class="pet-button" onclick="selectPet('piggy')">🐷 Gym Piggy</button>
-        </div>
-        
-        <div class="base-info" id="baseInfo">
-            <strong>Gym Dragon Base Chance:</strong> 1 in 25,000,000 (0.000004%)
-        </div>
-        
-        <div class="multiplier-grid" id="multiplierGrid">
-            <!-- Multipliers will be populated by JavaScript -->
-        </div>
-        
-        <div style="text-align: center; margin-bottom: 20px;">
-            <button class="all-btn" onclick="selectAll()">Select All</button>
-            <button class="reset-btn" onclick="resetAll()">Reset All</button>
-        </div>
-        
-        <div class="results">
-            <div class="current-odds" id="currentOdds">
-                Current Odds: 1 in 25,000,000 (0.000004%)
-            </div>
-        </div>
+  <div class="wrap">
+
+    <h1>99 Nights in the Forest — Role Selector</h1>
+    <div class="subtitle" id="subtitle">How many players are you playing with?</div>
+
+    <!-- Player Count Selection -->
+    <div id="playerSelect" class="button-group">
+      <button data-players="2">2 Players</button>
+      <button data-players="3">3 Players</button>
     </div>
 
-    <script>
-        const pets = {
-            dragon: {
-                name: "Gym Dragon",
-                emoji: "🐉",
-                baseChance: 1 / 5000000
-            },
-            corgi: {
-                name: "Gym Corgi", 
-                emoji: "🐕",
-                baseChance: 1 / 2000000
-            },
-            piggy: {
-                name: "Gym Piggy",
-                emoji: "🐷", 
-                baseChance: 1 / 200000
-            },
-            panda: {
-                name: "Huge Gym Panda",
-                emoji: "🐼",
-                baseChance: 1 / 16666667
-            }
-        };
-        
-        let currentPet = 'dragon';
-        
-        const multipliers = [
-            { name: "Lucky Eggs X", boost: 384, active: false },
-            { name: "Lucky Eggs Potions XI", boost: 275, active: false },
-            { name: "The Cocktail II", boost: 400, active: false },
-            { name: "Glitch Drive", boost: 400, active: false },
-            { name: "Boost Exchange", boost: 144, active: false },
-            { name: "Lucky (Gamepass)", boost: 200, active: false },
-            { name: "Ultra Lucky (Gamepass)", boost: 500, active: false }
-        ];
-        
-        function formatNumber(num) {
-            return num.toLocaleString();
-        }
-        
-        function formatProbability(prob) {
-            return (prob * 100).toFixed(6) + '%';
-        }
-        
-        function selectPet(petType) {
-            currentPet = petType;
-            
-            // Update active button
-            document.querySelectorAll('.pet-button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            updateBaseInfo();
-            updateDisplay();
-        }
-        
-        function updateBaseInfo() {
-            const pet = pets[currentPet];
-            const baseOdds = Math.round(1 / pet.baseChance);
-            document.getElementById('baseInfo').innerHTML = `
-                <strong>${pet.emoji} ${pet.name} Base Chance:</strong> 1 in ${formatNumber(baseOdds)} (${formatProbability(pet.baseChance)})
-            `;
-        }
-        
-        function calculateCurrentOdds() {
-            let totalBoost = 0;
-            multipliers.forEach(m => {
-                if (m.active) totalBoost += m.boost;
-            });
-            
-            const multiplier = 1 + (totalBoost / 100);
-            const baseChance = pets[currentPet].baseChance;
-            const boostedChance = baseChance * multiplier;
-            const odds = Math.round(1 / boostedChance);
-            
-            return {
-                multiplier: multiplier,
-                odds: odds,
-                probability: boostedChance,
-                totalBoost: totalBoost
-            };
-        }
-        
-        function updateDisplay() {
-            const current = calculateCurrentOdds();
-            const pet = pets[currentPet];
-            document.getElementById('currentOdds').innerHTML = `
-                ${pet.emoji} ${pet.name} Current Odds: 1 in ${formatNumber(current.odds)} (${formatProbability(current.probability)})<br>
-                <small>Total Boost: ${current.totalBoost}% (${current.multiplier.toFixed(2)}x multiplier)</small>
-            `;
-        }
-        
-        function toggleMultiplier(index) {
-            multipliers[index].active = !multipliers[index].active;
-            renderMultipliers();
-            updateDisplay();
-        }
-        
-        function renderMultipliers() {
-            const grid = document.getElementById('multiplierGrid');
-            grid.innerHTML = '';
-            
-            multipliers.forEach((m, index) => {
-                const item = document.createElement('div');
-                item.className = `multiplier-item ${m.active ? 'active' : ''}`;
-                item.onclick = () => toggleMultiplier(index);
-                item.innerHTML = `
-                    <div class="multiplier-name">${m.name}</div>
-                    <div class="multiplier-value">+${m.boost}%</div>
-                `;
-                grid.appendChild(item);
-            });
-        }
-        
-        function selectAll() {
-            multipliers.forEach(m => m.active = true);
-            renderMultipliers();
-            updateDisplay();
-        }
-        
-        function resetAll() {
-            multipliers.forEach(m => m.active = false);
-            renderMultipliers();
-            updateDisplay();
-        }
-        
-        // Initialize
-        renderMultipliers();
-        updateBaseInfo();
-        updateDisplay();
-    </script>
+    <!-- Role Selection for 2 Players -->
+    <div id="roles2" class="hidden">
+      <h2 style="color: var(--accent2); margin-bottom: 8px;">Select Your Role</h2>
+      <div class="grid">
+        <div class="card role-choice" data-role="Base Builder / Keeper + Lumberjack / Fire Keeper">
+          <div class="role-head"><div class="emoji">🏠🩹</div><div class="title">Base Builder / Keeper + Lumberjack / Fire Keeper</div></div>
+          <div class="tasks">
+            <div class="task"><div class="bullet">📦</div><div>makes sure base is organized</div></div>
+            <div class="task"><div class="bullet">🛏</div><div>makes sure you have all beds</div></div>
+            <div class="task"><div class="bullet">🧰</div><div>makes sure you have all the things you need within a base</div></div>
+            <div class="task"><div class="bullet">🩹</div><div>makes sure base has bandages & saves people who die</div></div>
+            <div class="task"><div class="bullet">🌳</div><div>cuts down MANY trees</div></div>
+            <div class="task"><div class="bullet">🌱</div><div>saves the saplings</div></div>
+            <div class="task"><div class="bullet">🌲</div><div>in charge of making a tree farm and cutting it down regularly</div></div>
+            <div class="task"><div class="bullet">🔥</div><div>makes sure the fire doesn't run out</div></div>
+            <div class="task"><div class="bullet">🪣</div><div>gets oil & coal etc. to fuel fire</div></div>
+          </div>
+        </div>
+        <div class="card role-choice" data-role="Food Supplier / Cook + Scrap & Loot Finder / Explorer">
+          <div class="role-head"><div class="emoji">🍲🗺</div><div class="title">Food Supplier / Cook + Scrap & Loot Finder / Explorer</div></div>
+          <div class="tasks">
+            <div class="task"><div class="bullet">🍽</div><div>makes sure everyone is fed</div></div>
+            <div class="task"><div class="bullet">🥘</div><div>in charge of crockpot & farm plots</div></div>
+            <div class="task"><div class="bullet">🍛</div><div>makes stews & keeps food at base</div></div>
+            <div class="task"><div class="bullet">🐇</div><div>kills rabbits & wolves for food</div></div>
+            <div class="task"><div class="bullet">🐻</div><div>makes sure people get pelts etc. for ammo & weapons</div></div>
+            <div class="task"><div class="bullet">🛠</div><div>finds scrap for the bench so the base keeper can maintain base and get things that everyone needs</div></div>
+            <div class="task"><div class="bullet">⚒</div><div>makes sure everyone has the appropriate weapons & tools for their role (e.g. wood person has great axe / chainsaw etc.)</div></div>
+            <div class="task"><div class="bullet">👶</div><div>finds all of the kids to make days go faster</div></div>
+            <div class="task"><div class="bullet">📦</div><div>also finds loot etc. & scraps & pelts while exploring; explores stronghold etc.</div></div>
+            <div class="task"><div class="bullet">🗡</div><div>fights cultists at base</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role Selection for 3 Players -->
+    <div id="roles3" class="hidden">
+      <h2 style="color: var(--accent2); margin-bottom: 8px;">Select Your Role</h2>
+      <div class="grid">
+        <div class="card role-choice" data-role="Base Builder / Keeper">
+          <div class="role-head"><div class="emoji">🏠🩹</div><div class="title">Base Builder / Keeper</div></div>
+          <div class="tasks">
+            <div class="task"><div class="bullet">📦</div><div>makes sure base is organized</div></div>
+            <div class="task"><div class="bullet">🛏</div><div>makes sure you have all beds</div></div>
+            <div class="task"><div class="bullet">🧰</div><div>makes sure you have all the things you need within a base</div></div>
+            <div class="task"><div class="bullet">🩹</div><div>makes sure base has bandages & saves people who die</div></div>
+          </div>
+        </div>
+        <div class="card role-choice" data-role="Food Supplier / Cook + Lumberjack / Fire Keeper">
+          <div class="role-head"><div class="emoji">🍲🔥</div><div class="title">Food Supplier / Cook + Lumberjack / Fire Keeper</div></div>
+          <div class="tasks">
+            <div class="task"><div class="bullet">🍽</div><div>makes sure everyone is fed</div></div>
+            <div class="task"><div class="bullet">🥘</div><div>in charge of crockpot & farm plots</div></div>
+            <div class="task"><div class="bullet">🍛</div><div>makes stews & keeps food at base</div></div>
+            <div class="task"><div class="bullet">🐇</div><div>kills rabbits & wolves for food</div></div>
+            <div class="task"><div class="bullet">🌳</div><div>cuts down MANY trees</div></div>
+            <div class="task"><div class="bullet">🌱</div><div>saves the saplings</div></div>
+            <div class="task"><div class="bullet">🌲</div><div>in charge of making a tree farm and cutting it down regularly</div></div>
+            <div class="task"><div class="bullet">🔥</div><div>makes sure the fire doesn't run out</div></div>
+            <div class="task"><div class="bullet">🪣</div><div>gets oil & coal etc. to fuel fire</div></div>
+          </div>
+        </div>
+        <div class="card role-choice" data-role="Scrap & Loot Finder">
+          <div class="role-head"><div class="emoji">🛠🗡</div><div class="title">Scrap & Loot Finder</div></div>
+          <div class="tasks">
+            <div class="task"><div class="bullet">🐻</div><div>makes sure people get pelts etc. for ammo & weapons</div></div>
+            <div class="task"><div class="bullet">🛠</div><div>finds scrap for the bench so the base keeper can maintain base and get things that everyone needs</div></div>
+            <div class="task"><div class="bullet">⚒</div><div>makes sure everyone has the appropriate weapons & tools for their role (e.g. wood person has great axe / chainsaw etc.)</div></div>
+          </div>
+        </div>
+        <div class="card role-choice" data-role="Explorer">
+          <div class="role-head"><div class="emoji">🗺🗡</div><div class="title">Explorer</div></div>
+          <div class="tasks">
+            <div class="task"><div class="bullet">👶</div><div>finds all of the kids to make days go faster</div></div>
+            <div class="task"><div class="bullet">📦</div><div>also finds loot etc. & scraps & pelts while exploring; explores stronghold etc.</div></div>
+            <div class="task"><div class="bullet">🗡</div><div>fights cultists at base</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">Reload the page to return here or change selection</div>
+  </div>
+
+<script>
+  const playerSelect = document.getElementById('playerSelect');
+  const roles2 = document.getElementById('roles2');
+  const roles3 = document.getElementById('roles3');
+  const subtitle = document.getElementById('subtitle');
+
+  // Load saved selection
+  const savedPlayers = localStorage.getItem('players');
+  const savedRole = localStorage.getItem('role');
+
+  function showPlayerSelect() {
+    playerSelect.classList.remove('hidden');
+    roles2.classList.add('hidden');
+    roles3.classList.add('hidden');
+    subtitle.textContent = 'How many players are you playing with?';
+  }
+
+  function showRoles(count) {
+    playerSelect.classList.add('hidden');
+    if (count === '2') {
+      roles2.classList.remove('hidden');
+      roles3.classList.add('hidden');
+      subtitle.textContent = 'Select your role (2 Players)';
+    } else if (count === '3') {
+      roles3.classList.remove('hidden');
+      roles2.classList.add('hidden');
+      subtitle.textContent = 'Select your role (3 Players)';
+    }
+  }
+
+  // Restore previous selection if exists
+  if (savedPlayers) {
+    showRoles(savedPlayers);
+    if (savedRole) {
+      alert(`You previously selected role: ${savedRole}`);
+    }
+  }
+
+  // Player count buttons
+  playerSelect.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+      const count = button.getAttribute('data-players');
+      localStorage.setItem('players', count);
+      localStorage.removeItem('role'); // Clear old role when new player count chosen
+      showRoles(count);
+    });
+  });
+
+  // Role selection
+  document.querySelectorAll('.role-choice').forEach(card => {
+    card.addEventListener('click', () => {
+      const role = card.getAttribute('data-role');
+      localStorage.setItem('role', role);
+      alert(`You selected role:\n\n${role}\n\nReload to change.`);
+    });
+  });
+</script>
+
 </body>
 </html>
